@@ -36,32 +36,35 @@ const recentPosts = blogPosts
   <section>
     <h2 class="text-2xl font-bold mb-6">最新文章</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      {recentPosts.map((post) => (
-        <article key={post.slug} class="p-6 border border-border rounded-lg hover:shadow-sm transition-shadow">
-          <h3 class="text-xl font-semibold mb-2">
-            <a href={`/blog/${post.slug}`} class="hover:text-primary transition-colors">
-              {post.data.title}
-            </a>
-          </h3>
-          <p class="text-muted-foreground text-sm mb-3">
-            {new Date(post.data.date).toLocaleDateString('zh-CN', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric'
-            })}
-          </p>
-          <p class="text-muted-foreground mb-4">{post.data.description}</p>
-          {post.data.tags && (
-            <div class="flex flex-wrap gap-2">
-              {post.data.tags.map((tag) => (
-                <span key={tag} class="px-2 py-1 bg-muted rounded-full text-xs">
-                  {tag}
-                </span>
-              ))}
-            </div>
-          )}
-        </article>
-      ))}
+      {recentPosts.map((post) => {
+        const slug = post.id.replace(/\.(md|mdx)$/, '');
+        return (
+          <article class="p-6 border border-border rounded-lg hover:shadow-sm transition-shadow">
+            <h3 class="text-xl font-semibold mb-2">
+              <a href={`/blog/${slug}`} class="hover:text-primary transition-colors">
+                {post.data.title}
+              </a>
+            </h3>
+            <p class="text-muted-foreground text-sm mb-3">
+              {new Date(post.data.date).toLocaleDateString('zh-CN', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+              })}
+            </p>
+            <p class="text-muted-foreground mb-4">{post.data.description}</p>
+            {post.data.tags && (
+              <div class="flex flex-wrap gap-2">
+                {post.data.tags.map((tag) => (
+                  <span class="px-2 py-1 bg-muted rounded-full text-xs">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
+          </article>
+        );
+      })}
     </div>
   </section>
 </Layout>

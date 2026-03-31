@@ -1,13 +1,13 @@
 ---
 interface Props {
-  repo: string;
-  repoId: string;
-  category: string;
-  categoryId: string;
-  mapping: string;
-  reactionsEnabled: number;
-  emitMetadata: boolean;
-  theme: string;
+  repo?: string;
+  repoId?: string;
+  category?: string;
+  categoryId?: string;
+  mapping?: string;
+  reactionsEnabled?: number;
+  emitMetadata?: boolean;
+  theme?: string;
 }
 
 const {
@@ -27,6 +27,7 @@ const {
   <div class="border border-border rounded-lg p-4">
     <script
       src="https://giscus.app/client.js"
+      is:inline
       data-repo={repo}
       data-repo-id={repoId}
       data-category={category}

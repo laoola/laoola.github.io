@@ -18,7 +18,7 @@ const sortedPosts = blogPosts.sort((a, b) =>
     {sortedPosts.map((post) => {
       const slug = post.id.replace(/\.(md|mdx)$/, '');
       return (
-        <article key={slug} class="p-6 border border-border rounded-lg hover:shadow-sm transition-shadow">
+        <article class="p-6 border border-border rounded-lg hover:shadow-sm transition-shadow">
           <h2 class="text-xl font-semibold mb-2">
             <a href={`/blog/${slug}`} class="hover:text-primary transition-colors">
               {post.data.title}
@@ -35,7 +35,7 @@ const sortedPosts = blogPosts.sort((a, b) =>
           {post.data.tags && (
             <div class="flex flex-wrap gap-2">
               {post.data.tags.map((tag) => (
-                <span key={tag} class="px-2 py-1 bg-muted rounded-full text-xs">
+                <span class="px-2 py-1 bg-muted rounded-full text-xs">
                   {tag}
                 </span>
               ))}

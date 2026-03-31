@@ -30,11 +30,7 @@ export default defineConfig({
     syntaxHighlight: 'shiki',
     shikiConfig: {
       theme: 'github-dark',
-      wrap: true,
-      lineNumbers: true
-    },
-    components: {
-      code: 'src/components/CodeBlock.astro'
+      wrap: true
     }
   }
 });
