@@ -1,0 +1,26 @@
+---
+import Layout from '@/layouts/Layout.astro';
+---
+
+<Layout title="搜索" description="搜索博客文章">
+  <header class="mb-8">
+    <h1 class="text-3xl md:text-4xl font-bold">搜索</h1>
+    <p class="text-muted-foreground">搜索博客文章</p>
+  </header>
+
+  <div id="search" class="w-full"></div>
+
+  <script src="/pagefind/pagefind-ui.js"></script>
+  <link href="/pagefind/pagefind-ui.css" rel="stylesheet">
+  <script>
+    window.addEventListener('DOMContentLoaded', function() {
+      new PagefindUI({
+        element: "#search",
+        showSubResults: true,
+        excerptLength: 150,
+        placeholder: "搜索文章...",
+        resetStyles: false
+      });
+    });
+  </script>
+</Layout>

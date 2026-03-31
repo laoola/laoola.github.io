@@ -1,0 +1,42 @@
+---
+interface Props {
+  repo: string;
+  repoId: string;
+  category: string;
+  categoryId: string;
+  mapping: string;
+  reactionsEnabled: number;
+  emitMetadata: boolean;
+  theme: string;
+}
+
+const {
+  repo = 'laoola-laoola/laoola-laoola.github.io',
+  repoId = 'OWN_REPO_ID',
+  category = 'Comments',
+  categoryId = 'OWN_CATEGORY_ID',
+  mapping = 'pathname',
+  reactionsEnabled = 1,
+  emitMetadata = false,
+  theme = 'preferred_color_scheme'
+} = Astro.props;
+---
+
+<div class="mt-12">
+  <h3 class="text-lg font-semibold mb-4">评论</h3>
+  <div class="border border-border rounded-lg p-4">
+    <script
+      src="https://giscus.app/client.js"
+      data-repo={repo}
+      data-repo-id={repoId}
+      data-category={category}
+      data-category-id={categoryId}
+      data-mapping={mapping}
+      data-reactions-enabled={reactionsEnabled}
+      data-emit-metadata={emitMetadata}
+      data-theme={theme}
+      crossorigin="anonymous"
+      async
+    ></script>
+  </div>
+</div>
