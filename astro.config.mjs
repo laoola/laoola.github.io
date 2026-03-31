@@ -9,7 +9,7 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://laoola-laoola.github.io',
+  site: 'https://laoola.github.io',
   vite: {
     plugins: [tailwindcss()],
     resolve: {

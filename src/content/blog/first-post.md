@@ -50,6 +50,34 @@ tags:
 4. 本地预览：`npm run dev`
 5. 构建部署：`npm run build`
 
+## 代码示例
+
+以下是一个JavaScript代码示例：
+
+```javascript
+// 示例代码：计算斐波那契数列
+function fibonacci(n) {
+  if (n <= 1) return n;
+  return fibonacci(n - 1) + fibonacci(n - 2);
+}
+
+// 测试
+console.log(fibonacci(10)); // 输出：55
+```
+
+以下是一个Python代码示例：
+
+```python
+# 示例代码：计算阶乘
+def factorial(n):
+    if n == 0:
+        return 1
+    return n * factorial(n - 1)
+
+# 测试
+print(factorial(5))  # 输出：120
+```
+
 ## 结语
 
 希望这个博客能够记录我的技术学习和分享，也希望能为其他开发者提供有价值的内容。

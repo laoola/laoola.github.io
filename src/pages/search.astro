@@ -10,8 +10,8 @@ import Layout from '@/layouts/Layout.astro';
 
   <div id="search" class="w-full"></div>
 
-  <script src="/pagefind/pagefind-ui.js"></script>
-  <link href="/pagefind/pagefind-ui.css" rel="stylesheet">
+  <script src="/pagefind/pagefind-ui.js" is:inline></script>
+  <link href="/pagefind/pagefind-ui.css" rel="stylesheet" is:inline>
   <script>
     window.addEventListener('DOMContentLoaded', function() {
       new PagefindUI({
