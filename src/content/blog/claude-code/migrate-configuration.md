@@ -152,10 +152,8 @@ copy keybindings.json $env:USERPROFILE\.claude\
 
 ### 代理编排 (`agents.md`)
 
-什么时候用什么代理：
-
-| 场景 | 代理 |
-|------|------|
+| 场景 | 使用代理 |
+|------|----------|
 | 复杂功能实现 | `planner` |
 | 刚写完代码 | `code-reviewer` |
 | 新增功能/修复 Bug | `tdd-guide` |
@@ -165,39 +163,32 @@ copy keybindings.json $env:USERPROFILE\.claude\
 
 ### 代码审查 (`code-review.md`)
 
-强制审查触发条件：
+**必须触发审查：**
+- 写完/修改代码后
+- 合并到共享分支前
+- 安全敏感代码变更
+- 架构变更
 
-- 写完/修改代码后必须审查
-- 合并到共享分支前必须审查
-- 安全敏感代码变更必须审查
-- 架构变更必须审查
-
-检查清单：
-
+**检查清单：**
 - 代码可读性良好，命名规范
-- 函数小于 50 行
-- 文件小于 800 行
+- 函数 < 50 行，文件 < 800 行
 - 嵌套不超过 4 层
 - 错误处理显式
-- 没有硬编码秘钥
-- 没有调试 `console.log`
+- 无硬编码秘钥
+- 无调试 `console.log`
 - 新功能有测试
-- 测试覆盖率 >= 80%
+- 测试覆盖率 ≥ 80%
 
 ### 编码风格 (`coding-style.md`)
 
-核心原则：**不可变数据**，永远创建新对象不修改原对象。
-
-文件组织：多个小文件优于几个大文件，按功能领域组织。
-
-错误处理：每个层级都要处理，用户界面给友好信息，服务端记详细日志。
-
-输入验证：系统边界必须验证，失败快退。
+- **不可变数据**：永远创建新对象，不修改原对象
+- **文件组织**：多个小文件优于几个大文件，按功能领域组织
+- **错误处理**：每个层级都处理，UI 给友好信息，服务端记详细日志
+- **输入验证**：系统边界必须验证，失败快退
 
 ### Git 工作流 (`git-workflow.md`)
 
 提交格式：
-
 ```
 <type>: <description>
 ```
@@ -209,8 +200,7 @@ copy keybindings.json $env:USERPROFILE\.claude\
 ### 安全检查 (`security.md`)
 
 每次提交前必须检查：
-
-- [ ] 没有硬编码秘钥
+- [ ] 无硬编码秘钥
 - [ ] 所有用户输入都验证
 - [ ] SQL 注入预防（参数化查询）
 - [ ] XSS 预防（转义 HTML）
@@ -243,19 +233,11 @@ Compress-Archive -Path $env:USERPROFILE\.claude\* -DestinationPath claude-backup
 
 存到云端或者U盘，换机器直接解压就能用，不用重新折腾一遍。
 
-## 坑点记录
+## 注意事项
 
-### 权限问题
-
-Windows 下，如果 Claude Code 正在运行，替换文件可能会被拒绝。解决：关闭 Claude Code 再操作。
-
-### 路径问题
-
-Windows 路径是 `C:\Users\<用户名>\.claude`，macOS/Linux 是 `~/.claude`，解压的时候注意对应对位置。
-
-### API Key 不用迁移
-
-API Key 登录 Claude App 后会自动同步，不用从旧机器拷。`config.json` 里只放个占位就行。
+- **权限问题**: Windows 下，如果 Claude Code 正在运行，替换文件可能会被拒绝。解决：关闭 Claude Code 再操作。
+- **跨平台路径**: Windows 是 `C:\Users\<用户名>\.claude`，macOS/Linux 是 `~/.claude`，解压的时候注意对应位置。
+- **API Key 不用迁移**: API Key 登录 Claude App 后会自动同步，`config.json` 只需要占位，不用从旧机器拷贝。
 
 ## 最终效果
 
