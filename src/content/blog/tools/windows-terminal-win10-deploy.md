@@ -351,3 +351,82 @@ Windows Terminal 在 Windows 10 上部署美化本身不难，主要几个坑都
 - 配置自定义快捷键打开常用目录
 
 折腾完开发体验确实好很多。
+
+## 附录：Trae IDE statusline 显示异常排查
+
+最近遇到一个问题：Trae IDE 底部状态栏的 git statusline 显示异常，所有分段图标都变成了方框，无法正常渲染。
+
+### 问题现象
+
+![statusline 显示异常](https://i.imgur.com/tra-statusline-error.png)
+
+所有分段符号都显示为方框，整个状态栏排版错乱。
+
+### 排查过程
+
+首先怀疑是 Nerd Font 字体问题：
+
+- 检查编辑器字体配置，确实使用了 Nerd Font（CaskaydiaCove Nerd Font Mono）
+- 字体文件已经正确安装
+- 其他地方的图标都能正常显示，只有状态栏不正常
+
+进一步检查发现，Trae 的 `settings.json` JSON 文件有语法错误，红线波浪标注。
+
+### 问题原因
+
+JSON 文件存在两个语法错误：
+
+1. **多余的 trailing comma**：JSON 对象最后一个属性末尾不能有逗号，有些校验严格的解析器会报错
+2. **缩进错误 + 注释**：JSON 标准不支持 `//` 注释，虽然 Trae 通常容忍，但配合错误缩进会导致解析失败
+
+问题代码示例：
+
+```json
+"[cpp]": {
+  "editor.wordBasedSuggestions": "off",
+  "editor.semanticHighlighting.enabled": true,
+  "editor.stickyScroll.defaultModel": "foldingProviderModel",
+  "editor.suggest.insertMode": "replace",  // 这里多了一个逗号 ❌
+},
+```
+
+另一个问题：
+
+```json
+"workbench.editorAssociations": {
+  // ...
+  //"*.md": "default",        // JSON 不支持注释
+  //"*.markdown": "default"
+    },                          // 这里缩进错误 ❌
+```
+
+### 解决方案
+
+1. 删除多余的 trailing comma
+2. 删除 JSON 中的 `//` 注释（或者移到不影响语法的位置）
+3. 修正缩进，确保每个花括号正确对齐
+
+修复后的正确格式：
+
+```json
+"[cpp]": {
+  "editor.wordBasedSuggestions": "off",
+  "editor.semanticHighlighting.enabled": true,
+  "editor.stickyScroll.defaultModel": "foldingProviderModel",
+  "editor.suggest.insertMode": "replace"  // 最后一项没有逗号 ✅
+},
+```
+
+验证 JSON 语法是否正确，可以用 Python 快速校验：
+
+```bash
+python -m json.tool < settings.json
+```
+
+如果没有输出错误，说明语法正确。
+
+**重启 Trae** 后，statusline 恢复正常显示。
+
+### 总结
+
+这个问题本质上是 `settings.json` JSON 语法错误导致 Trae 无法完整解析配置，某些扩展（如 statusline）读取配置失败从而显示异常。养成良好的 JSON 编辑习惯，避免多余逗号和不规范注释，可以省很多坑。
