@@ -14,10 +14,10 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content, headings } = await render(entry);
-// Convert from MarkdownHeading { level, title, slug } to TOC format { level, title, id }
-const tocHeadings = (headings as unknown as Array<{ level: number; title: string; slug: string }>).map(h => ({
-  level: h.level,
-  title: h.title,
+// Convert from Astro MarkdownHeading { depth, text, slug } to TOC format
+const tocHeadings = (headings as Array<{ depth: number; text: string; slug: string }>).map(h => ({
+  level: h.depth,
+  title: h.text,
   id: h.slug
 }));
 ---
