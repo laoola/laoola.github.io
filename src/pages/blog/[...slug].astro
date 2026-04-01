@@ -3,6 +3,7 @@ import { getCollection, render } from 'astro:content';
 import Layout from '@/layouts/Layout.astro';
 import TOC from '@/components/TOC.astro';
 import Giscus from '@/components/Giscus.astro';
+import CopyCodeButton from '@/components/CopyCodeButton.astro';
 
 export async function getStaticPaths() {
   const entries = await getCollection('blog', ({ data }) => !data.draft);
@@ -55,4 +56,5 @@ const tocHeadings = (headings as Array<{ depth: number; text: string; slug: stri
   </div>
 
   <Giscus />
+  <CopyCodeButton />
 </Layout>

@@ -1,0 +1,203 @@
+---
+// Automatically adds copy buttons with language labels to all code blocks
+// Usage: <CopyCodeButton /> in your post layout
+---
+
+<script>
+  // SVG icons
+  const copyIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`;
+  const checkIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+
+  // Language name mapping for better display
+  const languageMap: Record<string, string> = {
+    ts: "TypeScript",
+    js: "JavaScript",
+    tsx: "TSX",
+    jsx: "JSX",
+    md: "Markdown",
+    mdx: "MDX",
+    sh: "Shell",
+    bash: "Bash",
+    pwsh: "PowerShell",
+    powershell: "PowerShell",
+    json: "JSON",
+    yaml: "YAML",
+    yml: "YAML",
+    toml: "TOML",
+    css: "CSS",
+    scss: "SCSS",
+    html: "HTML",
+    xml: "XML",
+    py: "Python",
+    python: "Python",
+    rb: "Ruby",
+    ruby: "Ruby",
+    cpp: "C++",
+    c: "C",
+    h: "C Header",
+    hpp: "C++ Header",
+    java: "Java",
+    kotlin: "Kotlin",
+    go: "Go",
+    golang: "Go",
+    rust: "Rust",
+    rs: "Rust",
+    swift: "Swift",
+    php: "PHP",
+    sql: "SQL",
+    dockerfile: "Dockerfile",
+    makefile: "Makefile",
+    markdown: "Markdown",
+    diff: "Diff",
+  };
+
+  function formatLanguage(lang: string): string {
+    if (!lang) return "Code";
+    const lower = lang.toLowerCase();
+    if (languageMap[lower]) {
+      return languageMap[lower];
+    }
+    // Capitalize first letter as fallback
+    return lang.charAt(0).toUpperCase() + lang.slice(1);
+  }
+
+  function addCopyButtons() {
+    // Find all pre elements that contain code (Shiki renders these)
+    const codeBlocks = Array.from(document.querySelectorAll("pre"));
+
+    for (const codeBlock of codeBlocks) {
+      // Skip if already processed
+      if (codeBlock.parentElement?.classList.contains("code-block-wrapper")) {
+        continue;
+      }
+
+      // Get language from Shiki data attribute
+      const lang = codeBlock.getAttribute("data-language") || "";
+      const displayLanguage = formatLanguage(lang);
+
+      // Create wrapper
+      const wrapper = document.createElement("div");
+      wrapper.className = "code-block-wrapper";
+
+      // Create header bar
+      const headerBar = document.createElement("div");
+      headerBar.className = "code-block-header";
+
+      // Language label
+      const langLabel = document.createElement("span");
+      langLabel.className = "code-block-language";
+      langLabel.textContent = displayLanguage;
+      langLabel.setAttribute("aria-label", `Code language: ${displayLanguage}`);
+
+      // Copy button
+      const copyBtn = document.createElement("button");
+      copyBtn.type = "button";
+      copyBtn.className = "code-block-copy-btn";
+      copyBtn.innerHTML = copyIcon;
+      copyBtn.setAttribute("aria-label", "Copy code to clipboard");
+      copyBtn.setAttribute("title", "Copy code");
+
+      // Copy functionality
+      copyBtn.addEventListener("click", async () => {
+        const code = codeBlock.querySelector("code");
+        const text = code?.innerText || "";
+
+        try {
+          await navigator.clipboard.writeText(text);
+          copyBtn.innerHTML = checkIcon;
+          copyBtn.classList.add("copied");
+          setTimeout(() => {
+            copyBtn.innerHTML = copyIcon;
+            copyBtn.classList.remove("copied");
+          }, 2000);
+        } catch (err) {
+          console.error("Failed to copy:", err);
+        }
+      });
+
+      // Assemble the structure
+      headerBar.appendChild(langLabel);
+      headerBar.appendChild(copyBtn);
+
+      // Insert into DOM
+      codeBlock.parentNode?.insertBefore(wrapper, codeBlock);
+      wrapper.appendChild(headerBar);
+      wrapper.appendChild(codeBlock);
+
+      // Adjust pre styling
+      codeBlock.classList.add("code-block-pre");
+    }
+  }
+
+  // Add buttons on initial load
+  addCopyButtons();
+
+  // Re-add when Astro navigates (view transitions)
+  document.addEventListener("astro:page-load", () => {
+    addCopyButtons();
+  });
+</script>
+
+<style is:global>
+  .code-block-wrapper {
+    position: relative;
+    margin: 1.5rem 0;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .code-block-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.375rem 0.75rem;
+    background-color: var(--muted);
+    border-bottom: 1px solid var(--border);
+    user-select: none;
+  }
+
+  .code-block-language {
+    font-size: 0.75rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    color: var(--muted-foreground);
+    pointer-events: none;
+  }
+
+  .code-block-copy-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.25rem;
+    border-radius: 0.25rem;
+    border: none;
+    background: transparent;
+    color: var(--muted-foreground);
+    cursor: pointer;
+    transition: all 0.15s ease-in-out;
+    line-height: 1;
+  }
+
+  .code-block-copy-btn:hover {
+    background-color: rgba(0, 0, 0, 0.08);
+    color: var(--foreground);
+  }
+
+  .dark .code-block-copy-btn:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    color: var(--foreground);
+  }
+
+  .code-block-copy-btn.copied {
+    color: #22c55e;
+  }
+
+  .dark .code-block-copy-btn.copied {
+    color: #4ade80;
+  }
+
+  .code-block-pre {
+    margin: 0 !important;
+    border-radius: 0 !important;
+  }
+</style>
