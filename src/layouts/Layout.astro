@@ -19,12 +19,15 @@ const { title, description } = Astro.props;
   <meta name="description" content={description}>
 </head>
 <body class="bg-background text-foreground font-sans">
-  <header class="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
+  <div class="tech-background">
+    <div class="dot-3"></div>
+  </div>
+  <header class="sticky top-0 z-50 tech-glass-nav border-b border-border">
     <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-      <a href="/" class="text-xl font-bold">个人技术思考</a>
+      <a href="/" class="text-xl font-bold tech-text-gradient">个人技术思考</a>
       <nav class="flex items-center gap-6">
-        <a href="/blog" class="hover:text-primary transition-colors">思考</a>
-        <a href="/search" class="hover:text-primary transition-colors">搜索</a>
+        <a href="/blog" class="hover:text-primary transition-colors tech-interactive">思考</a>
+        <a href="/search" class="hover:text-primary transition-colors tech-interactive">搜索</a>
         <ThemeToggle />
       </nav>
     </div>

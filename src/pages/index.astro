@@ -26,17 +26,20 @@ const sortedTags = Object.entries(allTags)
 
 <Layout title="首页" description="个人技术思考首页">
   {/* Hero 区域 */}
-  <section class="mb-12">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center mb-10">
+  <section class="mb-12 relative">
+    {/* 渐变光晕装饰 */}
+    <div class="absolute -top-10 -right-10 w-64 h-64 rounded-full bg-gradient-radial from-[var(--tech-gradient-1)] to-transparent opacity-20 blur-2xl animate-pulse pointer-events-none"></div>
+    <div class="absolute -bottom-10 -left-10 w-48 h-48 rounded-full bg-gradient-radial from-[var(--tech-gradient-2)] to-transparent opacity-20 blur-2xl animate-pulse animation-delay-2000 pointer-events-none"></div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center mb-10 relative z-10">
       <div class="md:col-span-1 flex justify-center">
         <img
           src="https://github.com/laoola.png"
           alt="头像"
-          class="w-48 h-48 rounded-full border-4 border-border shadow-lg"
+          class="w-48 h-48 rounded-full border-4 border-border shadow-lg ring-2 ring-[var(--tech-gradient-1)]/20"
         />
       </div>
       <div class="md:col-span-2">
-        <h1 class="text-4xl md:text-5xl font-bold mb-4">你好，我是玛卡巴子</h1>
+        <h1 class="text-4xl md:text-5xl font-bold mb-4 tech-text-gradient">你好，我是玛卡巴子</h1>
         <p class="text-xl text-muted-foreground mb-6">
           记录技术学习，分享开发经验，沉淀思考感悟
         </p>
@@ -45,11 +48,11 @@ const sortedTags = Object.entries(allTags)
             href="https://github.com/laoola"
             target="_blank"
             rel="noopener noreferrer"
-            class="px-4 py-2 border border-border rounded-lg hover:bg-muted transition-colors"
+            class="px-4 py-2 border border-border rounded-lg hover:bg-muted transition-colors tech-card-hover tech-interactive"
           >
             GitHub
           </a>
-          <a href="/blog" class="px-4 py-2 border border-border rounded-lg hover:bg-muted transition-colors">
+          <a href="/blog" class="px-4 py-2 border border-border rounded-lg hover:bg-muted transition-colors tech-card-hover tech-interactive">
             查看全部思考
           </a>
         </div>
@@ -64,9 +67,9 @@ const sortedTags = Object.entries(allTags)
       {recentPosts.map((post) => {
         const slug = post.id.replace(/\.(md|mdx)$/, '');
         return (
-          <article class="p-6 border border-border rounded-lg hover:shadow-sm transition-shadow">
+          <article class="p-6 border border-border rounded-lg tech-card-hover">
             <h3 class="text-xl font-semibold mb-2">
-              <a href={`/blog/${slug}`} class="hover:text-primary transition-colors">
+              <a href={`/blog/${slug}`} class="hover:text-primary transition-colors tech-interactive">
                 {post.data.title}
               </a>
             </h3>
@@ -81,7 +84,7 @@ const sortedTags = Object.entries(allTags)
             {post.data.tags && (
               <div class="flex flex-wrap gap-2">
                 {post.data.tags.map((tag) => (
-                  <span class="px-2 py-1 bg-muted rounded-full text-xs">
+                  <span class="px-2 py-1 bg-muted rounded-full text-xs tech-interactive">
                     {tag}
                   </span>
                 ))}
@@ -93,7 +96,7 @@ const sortedTags = Object.entries(allTags)
     </div>
     {posts.length > 6 && (
       <div class="mt-8 text-center">
-        <a href="/blog" class="inline-block px-6 py-2 border border-border rounded-lg hover:bg-muted transition-colors">
+        <a href="/blog" class="inline-block px-6 py-2 border border-border rounded-lg hover:bg-muted transition-colors tech-card-hover tech-interactive">
           查看全部 ({posts.length}) →
         </a>
       </div>
@@ -111,7 +114,7 @@ const sortedTags = Object.entries(allTags)
           return (
             <a
               href={`/search?q=${tag}`}
-              class={`${sizeClass} px-4 py-2 bg-muted rounded-full hover:bg-muted/80 transition-colors`}
+              class={`${sizeClass} px-4 py-2 bg-muted rounded-full hover:bg-muted/80 transition-colors tech-card-hover tech-interactive`}
             >
               {tag} ({count})
             </a>

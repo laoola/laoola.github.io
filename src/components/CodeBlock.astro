@@ -8,13 +8,13 @@ interface Props {
 const { code, language, filename } = Astro.props;
 ---
 
-<div class="relative">
+<div class="relative tech-glow-border tech-card-hover rounded-lg overflow-hidden">
   {filename && (
-    <div class="bg-muted text-muted-foreground text-sm px-4 py-2 rounded-t-lg border-b border-border">
+    <div class="bg-muted text-muted-foreground text-sm px-4 py-2 rounded-t-lg border-b border-border tech-code-header">
       {filename}
     </div>
   )}
-  <pre class="relative bg-muted rounded-lg p-4 overflow-x-auto">
+  <pre class={`relative bg-muted rounded-lg p-4 overflow-x-auto ${!filename && 'tech-code-header'}`}>
     <code class={`language-${language}`}>{code}</code>
     <button
       class="absolute top-2 right-2 p-2 bg-background rounded-md hover:bg-accent transition-colors"
