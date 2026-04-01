@@ -128,3 +128,141 @@
     @apply font-sans;
     }
 }
+
+/* Markdown 文章内容自定义样式 */
+.prose {
+  /* 中文排版优化 */
+  line-height: 1.8;
+  letter-spacing: 0.01em;
+}
+
+.prose p {
+  margin-top: 1.2em;
+  margin-bottom: 1.2em;
+}
+
+.prose h1 {
+  font-size: 2.2em;
+  margin-top: 1.5em;
+  margin-bottom: 0.8em;
+  line-height: 1.3;
+}
+
+.prose h2 {
+  font-size: 1.8em;
+  margin-top: 1.4em;
+  margin-bottom: 0.7em;
+  line-height: 1.3;
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid var(--border);
+}
+
+.prose h3 {
+  font-size: 1.4em;
+  margin-top: 1.3em;
+  margin-bottom: 0.6em;
+  line-height: 1.4;
+}
+
+.prose h4 {
+  font-size: 1.2em;
+  margin-top: 1.2em;
+  margin-bottom: 0.5em;
+}
+
+.prose ul {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  padding-left: 1.8em;
+}
+
+.prose ol {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  padding-left: 1.8em;
+}
+
+.prose li {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+.prose code {
+  background-color: var(--muted);
+  padding: 0.2em 0.4em;
+  border-radius: 0.3em;
+  font-size: 0.9em;
+}
+
+.prose pre {
+  background-color: var(--muted);
+  border-radius: 0.5em;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  overflow-x: auto;
+}
+
+.prose pre code {
+  background: none;
+  padding: 0;
+}
+
+.prose table {
+  border-collapse: collapse;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  width: 100%;
+  font-size: 0.95em;
+}
+
+.prose thead {
+  border-bottom: 2px solid var(--border);
+}
+
+.prose th {
+  padding: 0.6em 1em;
+  text-align: left;
+  font-weight: 600;
+  background-color: var(--muted);
+}
+
+.prose td {
+  padding: 0.6em 1em;
+  border-bottom: 1px solid var(--border);
+}
+
+.prose tbody tr:hover {
+  background-color: var(--muted);
+}
+
+.prose blockquote {
+  border-left: 4px solid var(--primary);
+  padding-left: 1em;
+  margin: 1.5em 0;
+  color: var(--muted-foreground);
+  background-color: var(--muted);
+  padding: 1em;
+  border-radius: 0 0.3em 0.3em 0;
+}
+
+.prose hr {
+  margin: 2em 0;
+  border-color: var(--border);
+}
+
+.prose a {
+  color: var(--primary);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+.prose a:hover {
+  color: var(--primary);
+  opacity: 0.8;
+}
+
+.prose img {
+  border-radius: 0.5em;
+  margin: 1.5em auto;
+}
