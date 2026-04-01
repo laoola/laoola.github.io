@@ -43,13 +43,25 @@ const tocHeadings = (headings as unknown as Array<{ level: number; title: string
     )}
   </header>
 
+  {/* 移动端/桌面开头都显示可折叠大纲 */}
+  {tocHeadings.length > 0 && (
+    <details class="mb-6 bg-card border border-border rounded-xl p-4 open">
+      <summary class="cursor-pointer font-semibold text-lg select-none">
+        本文目录
+      </summary>
+      <div class="mt-3">
+        <TOC headings={tocHeadings} isInline />
+      </div>
+    </details>
+  )}
+
   <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
     <main class="lg:col-span-3">
       <article class="bg-card border border-border rounded-xl p-6 md:p-8 prose prose-lg max-w-none">
         <Content />
       </article>
     </main>
-    <aside class="lg:col-span-1">
+    <aside class="lg:col-span-1 hidden lg:block">
       {tocHeadings.length > 0 && <TOC headings={tocHeadings} />}
     </aside>
   </div>

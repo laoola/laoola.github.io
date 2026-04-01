@@ -31,6 +31,7 @@ export default defineConfig({
     shikiConfig: {
       theme: 'github-dark',
       wrap: true
-    }
+    },
+    headingIds: true
   }
 });
