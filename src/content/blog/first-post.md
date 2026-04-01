@@ -8,76 +8,125 @@ tags:
   - Tailwind CSS
 ---
 
-# 欢迎来到我的技术博客
+# 欢迎来到我的技术思考
 
-## 博客简介
+你现在看到的是一个用 **Astro 6 + Tailwind CSS v4 + Shadcn UI** 搭建的静态站点。本文记录搭建过程和技术选型。
 
-这是一个使用Astro + Tailwind CSS + Shadcn UI搭建的个人技术博客。本文将介绍博客的技术栈和搭建过程。
+## 为什么选 Astro？
 
-## 技术栈
+我搭建这个站的时候试过几个方案：
 
-### 核心框架
-- **Astro**：现代化的静态站点生成器，提供优秀的性能和开发体验
-- **Tailwind CSS v4**：实用优先的CSS框架，快速构建响应式界面
-- **Shadcn UI**：基于Tailwind的组件库，提供美观的UI组件
+| 方案 | 问题 |
+|------|------|
+| Next.js | 太重，博客不需要SSR |
+| Hexo | 生态老旧，维护不活跃 |
+| Astro | 静态输出快，内容管理友好，开发体验好 |
 
-### 功能特性
-- **Markdown + MDX**：支持标准Markdown和MDX格式的内容
-- **Shiki代码高亮**：提供美观的代码语法高亮
-- **PageFind搜索**：纯静态离线搜索功能
-- **Giscus评论**：基于GitHub Discussions的评论系统
-- **暗黑模式**：支持亮/暗色主题切换
-- **SEO优化**：自动生成sitemap和robots.txt
+最终选了 Astro，目前用下来感受：
+- 内容就是内容，代码就是代码，分离得很干净
+- 开发启动快，热更新快
+- 静态输出直接扔 GitHub Pages，不用买服务器
 
-## 搭建过程
+## 技术栈清单
 
-### 环境准备
-1. 安装Git和Node.js
-2. 设置npm代理（如果需要）
-3. 初始化Astro项目
+### 核心依赖
+- **Astro 6** - 静态站点生成，内容集合 API 很好用
+- **Tailwind CSS v4** - 不用写 CSS，复制粘贴就能用
+- **Shadcn UI** - 拿组件直接用，不用自己造轮子
 
-### 集成工具
-1. 添加Tailwind CSS v4
-2. 集成Shadcn UI组件库
-3. 配置Markdown和MDX支持
-4. 添加代码高亮和搜索功能
+### 特色功能
+- **Markdown/MDX** - 写文章就是写 Markdown，支持嵌入组件
+- **Shiki** - 代码高亮，和 VS Code 效果一致
+- **PageFind** - 纯静态全文搜索，不用后端
+- **Giscus** - 基于 GitHub Discussions 的评论，不用自己维护
+- **深色模式** - 说真的，晚上写代码还是深色舒服
+- **自动 Sitemap** - SEO 友好，搜索引擎能搜到
+
+## 从零搭建五分钟步骤
+
+### 1. 初始化项目
+```bash
+npm create astro@latest
+```
+
+### 2. 添加 Tailwind CSS
+```bash
+npx astro add tailwind
+```
+
+### 3. 添加 Shadcn UI
+```bash
+npx shadcn@latest init
+```
+
+### 4. 配置内容集合
+
+在 `src/content.config.ts` 定义 blog collection：
+
+```ts
+import { defineCollection, z } from 'astro:content';
+
+const blog = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/blog' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    date: z.coerce.date(),
+    tags: z.array(z.string()).optional(),
+    draft: z.boolean().optional(),
+  }),
+});
+
+export const collections = { blog };
+```
+
+### 5. 本地开发
+```bash
+npm run dev  # 访问 localhost:4321
+```
 
 ## 写作流程
 
-1. 在`src/content/blog`目录下创建Markdown或MDX文件
-2. 添加Frontmatter元数据
-3. 编写文章内容
-4. 本地预览：`npm run dev`
-5. 构建部署：`npm run build`
+1. 在 `src/content/blog/` 新建 `.md` 文件
+2. 开头加 Frontmatter：
+
+```markdown
+---
+title: 文章标题
+description: 文章描述
+date: 2026-03-31
+tags: [标签1, 标签2]
+draft: false
+---
+```
+
+3. 写 Markdown 内容
+4. 本地预览没问题，提交推送到 GitHub，GitHub Actions 自动部署
 
 ## 代码示例
 
-以下是一个JavaScript代码示例：
+算个斐波那契：
 
 ```javascript
-// 示例代码：计算斐波那契数列
 function fibonacci(n) {
   if (n <= 1) return n;
   return fibonacci(n - 1) + fibonacci(n - 2);
 }
 
-// 测试
-console.log(fibonacci(10)); // 输出：55
+console.log(fibonacci(10)); // 55
 ```
 
-以下是一个Python代码示例：
+算个阶乘：
 
 ```python
-# 示例代码：计算阶乘
 def factorial(n):
     if n == 0:
         return 1
     return n * factorial(n - 1)
 
-# 测试
-print(factorial(5))  # 输出：120
+print(factorial(5))  # 120
 ```
 
-## 结语
+## 最后
 
-希望这个博客能够记录我的技术学习和分享，也希望能为其他开发者提供有价值的内容。
+这个站用来记录技术学习过程，遇到的问题踩过的坑，以及一些思考。如果你能从这里找到有用的信息，那很好。

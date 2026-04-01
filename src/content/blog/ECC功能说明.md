@@ -7,15 +7,25 @@ tags: [Claude Code, everything-claude-code, 工具]
 
 # everything-claude-code 功能说明
 
-> 来自 Anthropic 黑客马拉松获胜者的完整 Claude Code 配置集合。生产级代理、技能、钩子、命令、规则和 MCP 配置，经过 10 多个月构建真实产品的密集日常使用而演化。
+你用 Claude Code 写代码还只靠默认配置吗？
+
+everything-claude-code（简称 ECC）是 Anthropic 黑客马拉松获胜者开源的一整套 Claude Code 最佳实践配置集合。包含 28+ 专业子代理、150+ 技能，经过 10 多个月真实产品开发打磨。
+
+安装之后，Claude Code 会自动按照生产级开发流程帮你写代码。
 
 ---
 
-## 项目概述
+## 这到底是什么？
 
-**everything-claude-code** 不是传统意义上的"插件市场"，而是一整套**经过实战检验的 Claude Code 最佳实践配置集合**，帮助你最大化 Claude Code 的使用效率。
+ECC 不是传统意义上的"插件"，它是：
 
-作者：affaan-m（Anthropic 黑客马拉松获胜者）
+- 一套**编码规则**：Claude 写代码自动遵循你的风格
+- 一堆**预制子代理**：不同任务用专门的代理处理（规划、审查、调试、测试）
+- 一堆**预制技能**：常见开发流程直接用（TDD、代码审查、构建错误修复）
+- 一堆**快捷命令**：斜杠命令一键触发工作流
+- 经过真实项目验证：作者用这套配置开发产品10+个月
+
+作者：affaan-m（Anthropic 黑客马拉松 2025 获胜者）
 
 ---
 
@@ -53,11 +63,9 @@ tags: [Claude Code, everything-claude-code, 工具]
 
 ### 🏗️ **架构与设计**
 
-| 技能
-
-| 功能描述                          | 使用场景                                                                    | 使用示例              |                                         |
-| :-------------------------------- | :-------------------------------------------------------------------------- | :-------------------- | :-------------------------------------- |
-| `api-design`                    | REST API 设计模式（资源命名、状态码、分页、过滤、错误响应、版本控制、限流） | API 设计              | 设计新的 RESTful API 端点               |
+| 技能 | 功能描述 | 使用场景 | 使用示例 |
+| :--- | :------- | :------- | :------- |
+| `api-design` | REST API 设计模式（资源命名、状态码、分页、过滤、错误响应、版本控制、限流） | API 设计 | 设计新的 RESTful API 端点 |
 | `backend-patterns`              | API、数据库、缓存设计模式                                                   | 设计后端架构          | `/agent architect` 设计后端架构时应用 |
 | `architecture-decision-records` | 架构决策记录 (ADR) 实践                                                     | 记录架构决策          | 项目重要决策文档化                      |
 | `android-clean-architecture`    | Android 清洁架构模式                                                        | Android 应用开发      | Android 项目架构设计                    |
