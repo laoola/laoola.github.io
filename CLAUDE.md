@@ -1,65 +1,69 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+本文档为 Claude Code (claude.ai/code) 在本代码库中的操作指南。
 
-## Commands
+## 常用命令
 
-- **Install dependencies**: `npm install`
-- **Start dev server**: `npm run dev` (runs on `localhost:4321`)
-- **Build for production**: `npm run build` (outputs to `dist/`, includes PageFind indexing)
-- **Preview production build**: `npm run preview`
+- **安装依赖**: `npm install`
+- **启动开发服务器**: `npm run dev` (运行在 `localhost:4321`)
+- **类型检查**: `npm run check` (运行 Astro 类型检查)
+- **生产构建**: `npm run build` (输出到 `dist/`，包含 PageFind 索引)
+- **预览生产构建**: `npm run preview`
+- **代码格式化**: `npm run format` (Prettier，包含 Astro 和 Tailwind 插件)
 - **Astro CLI**: `npm run astro`
 
-## Architecture Overview
+## 架构概览
 
-This is a **personal technical blog** built as a static website with Astro for GitHub Pages deployment.
+这是一个使用 Astro 构建的个人技术博客，静态网站生成，部署到 GitHub Pages。
 
-### Key Technologies
-- **Framework**: Astro 6 (Static Site Generation)
-- **Styling**: Tailwind CSS v4
-- **UI Components**: Shadcn UI + Radix UI
-- **Content**: Markdown/MDX with Astro Content Collections
-- **Syntax Highlighting**: Shiki
-- **Search**: PageFind (full-text search on static site)
-- **Comments**: Giscus (powered by GitHub Discussions)
-- **Language**: TypeScript (strict mode)
+### 核心技术栈
+- **框架**: Astro 6 (静态网站生成)
+- **样式**: Tailwind CSS v4
+- **UI 组件**: Shadcn UI + Radix UI
+- **内容**: Markdown/MDX + Astro Content Collections
+- **语法高亮**: Shiki
+- **搜索**: PageFind (静态网站全文搜索)
+- **评论**: Giscus (基于 GitHub Discussions)
+- **语言**: TypeScript (严格模式)
 
-### Project Structure
-- `src/content/blog/` - Blog posts as Markdown/MDX files
-- `src/pages/` - File-based routing (index, blog list, dynamic post pages, search)
-- `src/components/` - Reusable Astro/React components
-- `src/components/ui/` - Shadcn UI components
-- `src/layouts/` - Page layout templates
-- `src/lib/` - Utility functions
-- `public/` - Static assets
-- `dist/` - Build output (generated, not checked in)
+### 项目结构
+- `src/content/blog/` - Markdown/MDX 格式的博客文章
+- `src/pages/` - 基于文件的路由 (首页、博客列表、动态文章页、搜索页)
+- `src/components/` - 可复用的 Astro/React 组件
+- `src/components/ui/` - Shadcn UI 组件
+- `src/layouts/` - 页面布局模板
+- `src/lib/` - 工具函数
+- `public/` - 静态资源
+- `dist/` - 构建输出 (生成，不提交到仓库)
 
-### Content Schema
-Blog posts require frontmatter with:
-- `title` (string) - Post title
-- `description` (string) - Post description
-- `date` (date) - Publication date
-- `tags` (string[], optional) - Post tags
-- `draft` (boolean, optional, default: false) - Draft status
+### 内容 Schema
+博客文章 Frontmatter 需要包含：
+- `title` (string) - 文章标题
+- `description` (string) - 文章描述
+- `date` (date) - 发布日期
+- `tags` (string[], 可选) - 文章标签
+- `draft` (boolean, 可选，默认: false) - 草稿状态
 
-### Configuration
-- `astro.config.mjs` - Astro configuration with site URL `https://laoola.github.io`, Tailwind integration, Shiki highlighting
-- `tsconfig.json` - TypeScript with path alias `@/*` → `./src/*`
-- `components.json` - Shadcn UI configuration
-- `src/content.config.ts` - Content collection schema definition
+### 配置文件
+- `astro.config.mjs` - Astro 配置，站点地址 `https://laoola.github.io`，Tailwind 集成，Shiki 高亮
+- `tsconfig.json` - TypeScript 配置，路径别名 `@/*` → `./src/*`
+- `components.json` - Shadcn UI 配置
+- `src/content.config.ts` - 内容集合 Schema 定义
 
-### Key Features
-- Dark/light theme toggle with system detection
-- Table of contents (TOC) for blog posts
-- Copy-to-clipboard for code blocks
-- Responsive design (mobile + desktop)
-- Automatic sitemap generation
-- SEO-friendly
-- Draft posts visible only in development
+### 主要特性
+- 深色/浅色主题切换，支持系统检测 (`src/components/ThemeToggle.astro`)
+- 博客文章自动生成目录 (TOC) (`src/components/TOC.astro`)
+- 代码块复制到剪贴板 (`src/components/CodeBlock.astro`)
+- Giscus 评论系统，基于 GitHub Discussions (`src/components/Giscus.astro`)
+- 构建后通过 PageFind 支持全文搜索
+- 响应式设计 (支持移动端 + 桌面端)
+- 自动生成 Sitemap
+- SEO 友好
+- 草稿文章仅在开发环境可见
 
-## Important Notes
+## 重要提示
 
-- Node.js version requirement: `>=22.12.0`
-- Package manager: npm (uses package-lock.json)
-- Build output goes to `dist/` directory for GitHub Pages deployment
-- PageFind search indexing runs automatically after build
+- Node.js 版本要求: `>=22.12.0`
+- 包管理器: npm (使用 package-lock.json)
+- 构建输出到 `dist/` 目录，用于 GitHub Pages 部署
+- PageFind 搜索索引在构建后自动运行

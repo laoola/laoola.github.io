@@ -2,39 +2,64 @@
 import Layout from '@/layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 
-const blogPosts = await getCollection('blog', ({ data }) => !data.draft);
-const recentPosts = blogPosts
+const RECENT_POSTS_LIMIT = 6;
+const posts = await getCollection('blog', ({ data }) => !data.draft);
+const recentPosts = posts
   .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
-  .slice(0, 3);
+  .slice(0, RECENT_POSTS_LIMIT);
+
+// 提取所有标签并统计频次
+const allTags = posts.reduce((acc, post) => {
+  if (post.data.tags) {
+    post.data.tags.forEach(tag => {
+      acc[tag] = (acc[tag] || 0) + 1;
+    });
+  }
+  return acc;
+}, {} as Record<string, number>);
+
+// 按频次排序获取标签列表
+const sortedTags = Object.entries(allTags)
+  .sort(([, a], [, b]) => b - a)
+  .map(([tag]) => tag);
 ---
 
-<Layout title="首页" description="个人技术博客首页">
+<Layout title="首页" description="个人技术思考首页">
+  {/* Hero 区域 */}
   <section class="mb-12">
-    <h1 class="text-4xl md:text-5xl font-bold mb-4">欢迎来到我的技术博客</h1>
-    <p class="text-xl text-muted-foreground mb-8">
-      记录技术学习，分享开发经验
-    </p>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <div class="p-6 border border-border rounded-lg hover:shadow-sm transition-shadow">
-        <h3 class="text-xl font-semibold mb-2">博客文章</h3>
-        <p class="text-muted-foreground mb-4">技术文章和教程</p>
-        <a href="/blog" class="text-primary hover:underline">查看所有文章</a>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center mb-10">
+      <div class="md:col-span-1 flex justify-center">
+        <img
+          src="https://github.com/laoola.png"
+          alt="头像"
+          class="w-48 h-48 rounded-full border-4 border-border shadow-lg"
+        />
       </div>
-      <div class="p-6 border border-border rounded-lg hover:shadow-sm transition-shadow">
-        <h3 class="text-xl font-semibold mb-2">搜索功能</h3>
-        <p class="text-muted-foreground mb-4">快速查找文章内容</p>
-        <a href="/search" class="text-primary hover:underline">开始搜索</a>
-      </div>
-      <div class="p-6 border border-border rounded-lg hover:shadow-sm transition-shadow">
-        <h3 class="text-xl font-semibold mb-2">技术栈</h3>
-        <p class="text-muted-foreground mb-4">Astro + Tailwind CSS + Shadcn UI</p>
-        <a href="/blog/first-post" class="text-primary hover:underline">了解更多</a>
+      <div class="md:col-span-2">
+        <h1 class="text-4xl md:text-5xl font-bold mb-4">你好，我是张文昊</h1>
+        <p class="text-xl text-muted-foreground mb-6">
+          记录技术学习，分享开发经验，沉淀思考感悟
+        </p>
+        <div class="flex flex-wrap gap-4">
+          <a
+            href="https://github.com/laoola"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="px-4 py-2 border border-border rounded-lg hover:bg-muted transition-colors"
+          >
+            GitHub
+          </a>
+          <a href="/blog" class="px-4 py-2 border border-border rounded-lg hover:bg-muted transition-colors">
+            查看全部思考
+          </a>
+        </div>
       </div>
     </div>
   </section>
 
-  <section>
-    <h2 class="text-2xl font-bold mb-6">最新文章</h2>
+  {/* 最新文章 */}
+  <section class="mb-12">
+    <h2 class="text-2xl font-bold mb-6">最新思考</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       {recentPosts.map((post) => {
         const slug = post.id.replace(/\.(md|mdx)$/, '');
@@ -66,5 +91,33 @@ const recentPosts = blogPosts
         );
       })}
     </div>
+    {posts.length > 6 && (
+      <div class="mt-8 text-center">
+        <a href="/blog" class="inline-block px-6 py-2 border border-border rounded-lg hover:bg-muted transition-colors">
+          查看全部 ({posts.length}) →
+        </a>
+      </div>
+    )}
   </section>
+
+  {/* 标签云 */}
+  {sortedTags.length > 0 && (
+    <section>
+      <h2 class="text-2xl font-bold mb-6">标签分类</h2>
+      <div class="flex flex-wrap gap-3">
+        {sortedTags.map((tag) => {
+          const count = allTags[tag];
+          const sizeClass = count > 3 ? 'text-base font-medium' : count > 1 ? 'text-sm' : 'text-sm text-muted-foreground';
+          return (
+            <a
+              href={`/search?q=${tag}`}
+              class={`${sizeClass} px-4 py-2 bg-muted rounded-full hover:bg-muted/80 transition-colors`}
+            >
+              {tag} ({count})
+            </a>
+          );
+        })}
+      </div>
+    </section>
+  )}
 </Layout>
