@@ -27,7 +27,12 @@
 - **语言**: TypeScript (严格模式)
 
 ### 项目结构
-- `src/content/blog/` - Markdown/MDX 格式的博客文章
+- `src/content/blog/` - Markdown/MDX 格式的博客文章，按分类存放在子目录
+  - `claude-code/` - Claude Code 相关使用笔记
+  - `tools/` - 工具软件安装配置教程、工具收藏导航
+  - `intro/` - 介绍类文章
+  - 新建文章请放在对应分类子目录下，不直接放在 `blog/` 根目录
+  - 如果文章对应分类的子目录不存在，**先创建子目录**再存放文章
 - `src/pages/` - 基于文件的路由 (首页、博客列表、动态文章页、搜索页)
 - `src/components/` - 可复用的 Astro/React 组件
 - `src/components/ui/` - Shadcn UI 组件
