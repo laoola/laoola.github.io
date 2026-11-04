@@ -22,7 +22,7 @@ export default defineConfig({
   integrations: [mdx(), sitemap({
     changefreq: 'weekly',
     priority: 0.7,
-    lastmod: new Date(),
+    filter: (page) => new URL(page).pathname !== '/search/',
     entryLimit: 1000
   })],
 
@@ -31,7 +31,6 @@ export default defineConfig({
     shikiConfig: {
       theme: 'github-dark',
       wrap: true
-    },
-    headingIds: true
+    }
   }
 });

@@ -8,10 +8,10 @@ const sortedPosts = blogPosts.sort((a, b) =>
 );
 ---
 
-<Layout title="思考" description="个人技术思考文章列表">
+<Layout title="思考" description="C++、Qt、AI 编程工具与开发效率相关的文章和真实问题排查记录。">
   <header class="mb-8">
     <h1 class="text-3xl md:text-4xl font-bold">思考</h1>
-    <p class="text-muted-foreground">技术文章和思考记录</p>
+    <p class="text-muted-foreground">技术文章、实践经验与问题排查记录</p>
   </header>
 
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -35,9 +35,12 @@ const sortedPosts = blogPosts.sort((a, b) =>
           {post.data.tags && (
             <div class="flex flex-wrap gap-2">
               {post.data.tags.map((tag) => (
-                <span class="px-2 py-1 bg-muted rounded-full text-xs">
+                <a
+                  href={`/search?q=${encodeURIComponent(tag)}`}
+                  class="px-2 py-1 bg-muted rounded-full text-xs hover:bg-muted/80 transition-colors"
+                >
                   {tag}
-                </span>
+                </a>
               ))}
             </div>
           )}

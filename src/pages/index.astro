@@ -8,23 +8,22 @@ const recentPosts = posts
   .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
   .slice(0, RECENT_POSTS_LIMIT);
 
-// 提取所有标签并统计频次
-const allTags = posts.reduce((acc, post) => {
-  if (post.data.tags) {
-    post.data.tags.forEach(tag => {
-      acc[tag] = (acc[tag] || 0) + 1;
-    });
-  }
-  return acc;
-}, {} as Record<string, number>);
-
-// 按频次排序获取标签列表
-const sortedTags = Object.entries(allTags)
-  .sort(([, a], [, b]) => b - a)
-  .map(([tag]) => tag);
+// 首页只展示至少被两篇文章使用的标签，完整标签仍可从文章页进入搜索。
+const commonTags = Object.entries(
+  posts.reduce((acc, post) => {
+    if (post.data.tags) {
+      post.data.tags.forEach(tag => {
+        acc[tag] = (acc[tag] || 0) + 1;
+      });
+    }
+    return acc;
+  }, {} as Record<string, number>)
+)
+  .filter(([, count]) => count > 1)
+  .sort(([tagA, countA], [tagB, countB]) => countB - countA || tagA.localeCompare(tagB, 'zh-CN'));
 ---
 
-<Layout title="首页" description="个人技术思考首页">
+<Layout title="首页" description="玛卡巴子的个人技术博客，专注 C++、Qt 桌面开发、AI 编程工具实践与真实问题排查。">
   {/* Hero 区域 */}
   <section class="mb-12 relative">
     {/* 渐变光晕装饰 */}
@@ -34,14 +33,14 @@ const sortedTags = Object.entries(allTags)
       <div class="md:col-span-1 flex justify-center">
         <img
           src="https://github.com/laoola.png"
-          alt="头像"
+          alt="玛卡巴子的 GitHub 头像"
           class="w-48 h-48 rounded-full border-4 border-border shadow-lg ring-2 ring-[var(--tech-gradient-1)]/20"
         />
       </div>
       <div class="md:col-span-2">
         <h1 class="text-4xl md:text-5xl font-bold mb-4 tech-text-gradient">你好，我是玛卡巴子</h1>
         <p class="text-xl text-muted-foreground mb-6">
-          记录技术学习，分享开发经验，沉淀思考感悟
+          专注 C++ / Qt 桌面开发、AI 编程工具实践与真实问题排查。
         </p>
         <div class="flex flex-wrap gap-4">
           <a
@@ -54,6 +53,9 @@ const sortedTags = Object.entries(allTags)
           </a>
           <a href="/blog" class="px-4 py-2 border border-border rounded-lg hover:bg-muted transition-colors tech-card-hover tech-interactive">
             查看全部思考
+          </a>
+          <a href="/about" class="px-4 py-2 border border-border rounded-lg hover:bg-muted transition-colors tech-card-hover tech-interactive">
+            关于我
           </a>
         </div>
       </div>
@@ -84,9 +86,12 @@ const sortedTags = Object.entries(allTags)
             {post.data.tags && (
               <div class="flex flex-wrap gap-2">
                 {post.data.tags.map((tag) => (
-                  <span class="px-2 py-1 bg-muted rounded-full text-xs tech-interactive">
+                  <a
+                    href={`/search?q=${encodeURIComponent(tag)}`}
+                    class="px-2 py-1 bg-muted rounded-full text-xs hover:bg-muted/80 transition-colors tech-interactive"
+                  >
                     {tag}
-                  </span>
+                  </a>
                 ))}
               </div>
             )}
@@ -94,7 +99,7 @@ const sortedTags = Object.entries(allTags)
         );
       })}
     </div>
-    {posts.length > 6 && (
+    {posts.length > RECENT_POSTS_LIMIT && (
       <div class="mt-8 text-center">
         <a href="/blog" class="inline-block px-6 py-2 border border-border rounded-lg hover:bg-muted transition-colors tech-card-hover tech-interactive">
           查看全部 ({posts.length}) →
@@ -103,17 +108,17 @@ const sortedTags = Object.entries(allTags)
     )}
   </section>
 
-  {/* 标签云 */}
-  {sortedTags.length > 0 && (
+  {/* 常用标签 */}
+  {commonTags.length > 0 && (
     <section>
-      <h2 class="text-2xl font-bold mb-6">标签分类</h2>
+      <h2 class="text-2xl font-bold mb-2">常用标签</h2>
+      <p class="text-muted-foreground text-sm mb-6">按主题聚合文章，点击标签即可搜索。</p>
       <div class="flex flex-wrap gap-3">
-        {sortedTags.map((tag) => {
-          const count = allTags[tag];
-          const sizeClass = count > 3 ? 'text-base font-medium' : count > 1 ? 'text-sm' : 'text-sm text-muted-foreground';
+        {commonTags.map(([tag, count]) => {
+          const sizeClass = count > 3 ? 'text-base font-medium' : 'text-sm';
           return (
             <a
-              href={`/search?q=${tag}`}
+              href={`/search?q=${encodeURIComponent(tag)}`}
               class={`${sizeClass} px-4 py-2 bg-muted rounded-full hover:bg-muted/80 transition-colors tech-card-hover tech-interactive`}
             >
               {tag} ({count})

@@ -140,5 +140,5 @@ tags: [Claude Code, everything-claude-code, 配置]
 
 ## 相关文档
 
-- [ECC功能说明.md](./ECC功能说明.md) - everything-claude-code 完整功能
+- [ECC功能说明](/blog/claude-code/ecc功能说明/) - everything-claude-code 完整功能
 - [strategic-compact 官方文档](https://github.com/affaan-m/everything-claude-code/tree/main/docs/zh-CN/skills/strategic-compact) - 官方中文文档

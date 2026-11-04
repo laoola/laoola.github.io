@@ -5,9 +5,31 @@ import ThemeToggle from '@/components/ThemeToggle.astro';
 interface Props {
   title: string;
   description: string;
+  type?: 'website' | 'article';
+  publishedTime?: Date;
+  updatedTime?: Date;
+  noindex?: boolean;
 }
 
-const { title, description } = Astro.props;
+const {
+  title,
+  description,
+  type = 'website',
+  publishedTime,
+  updatedTime,
+  noindex = false,
+} = Astro.props;
+
+const site = Astro.site ?? new URL('https://laoola.github.io');
+const canonicalPath = Astro.url.pathname.endsWith('/')
+  ? Astro.url.pathname
+  : `${Astro.url.pathname}/`;
+const canonicalURL = new URL(canonicalPath, site);
+const rssURL = new URL('/rss.xml', site);
+const socialImage = 'https://github.com/laoola.png';
+const pageTitle = title === '首页'
+  ? '个人技术思考 | C++、Qt 与 AI 工具实践'
+  : `${title} | 个人技术思考`;
 ---
 
 <!DOCTYPE html>
@@ -15,19 +37,40 @@ const { title, description } = Astro.props;
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{title} | 个人技术思考</title>
+  <title>{pageTitle}</title>
   <meta name="description" content={description}>
+  {noindex && <meta name="robots" content="noindex,nofollow">}
+  <link rel="canonical" href={canonicalURL}>
+  <link rel="icon" href="/favicon.svg">
+  <link rel="alternate" type="application/rss+xml" title="个人技术思考 RSS" href={rssURL}>
+
+  <meta property="og:title" content={pageTitle}>
+  <meta property="og:description" content={description}>
+  <meta property="og:type" content={type}>
+  <meta property="og:url" content={canonicalURL}>
+  <meta property="og:site_name" content="个人技术思考">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:image" content={socialImage}>
+  <meta property="og:image:alt" content="玛卡巴子的 GitHub 头像">
+  {publishedTime && <meta property="article:published_time" content={publishedTime.toISOString()}>}
+  {updatedTime && <meta property="article:modified_time" content={updatedTime.toISOString()}>}
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content={pageTitle}>
+  <meta name="twitter:description" content={description}>
+  <meta name="twitter:image" content={socialImage}>
 </head>
 <body class="bg-background text-foreground font-sans">
   <div class="tech-background">
     <div class="dot-3"></div>
   </div>
-  <header class="sticky top-0 z-50 tech-glass-nav border-b border-border">
+  <header class="sticky top-0 z-50 tech-glass-nav border-b border-border" data-pagefind-ignore>
     <div class="container mx-auto px-4 py-4 flex justify-between items-center">
       <a href="/" class="text-xl font-bold tech-text-gradient">个人技术思考</a>
-      <nav class="flex items-center gap-6">
+      <nav class="flex items-center gap-6" aria-label="主导航">
         <a href="/blog" class="hover:text-primary transition-colors tech-interactive">思考</a>
         <a href="/search" class="hover:text-primary transition-colors tech-interactive">搜索</a>
+        <a href="/about" class="hover:text-primary transition-colors tech-interactive">关于</a>
         <ThemeToggle />
       </nav>
     </div>
@@ -37,9 +80,14 @@ const { title, description } = Astro.props;
     <slot />
   </main>
 
-  <footer class="border-t border-border py-8">
+  <footer class="border-t border-border py-8" data-pagefind-ignore>
     <div class="container mx-auto px-4 text-center text-muted-foreground">
       <p>© {new Date().getFullYear()} 个人技术思考</p>
+      <nav class="mt-3 flex justify-center gap-5 text-sm" aria-label="页脚导航">
+        <a href="/about" class="hover:text-primary transition-colors">关于我</a>
+        <a href="/rss.xml" class="hover:text-primary transition-colors">RSS 订阅</a>
+        <a href="https://github.com/laoola" target="_blank" rel="noopener noreferrer" class="hover:text-primary transition-colors">GitHub</a>
+      </nav>
     </div>
   </footer>
 </body>

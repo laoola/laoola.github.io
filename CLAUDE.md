@@ -58,7 +58,7 @@
 ### 主要特性
 - 深色/浅色主题切换，支持系统检测 (`src/components/ThemeToggle.astro`)
 - 博客文章自动生成目录 (TOC) (`src/components/TOC.astro`)
-- 代码块复制到剪贴板 (`src/components/CodeBlock.astro`)
+- 代码块复制到剪贴板 (`src/components/CopyCodeButton.astro`)
 - Giscus 评论系统，基于 GitHub Discussions (`src/components/Giscus.astro`)
 - 构建后通过 PageFind 支持全文搜索
 - 响应式设计 (支持移动端 + 桌面端)
