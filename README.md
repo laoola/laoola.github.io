@@ -49,29 +49,18 @@ scripts/
 └── deploy.yml           # 检查、构建、链接验证与部署
 ```
 
-## 新增文章
+## 新增或更新文章
 
-在 `src/content/blog/<分类>/` 下新建 `.md` 文件，最小 frontmatter：
+**必须遵循 [博文写作与发布 SOP](docs/运维/博文写作与发布流程.md)。** 项目级代理行为约束见 [AGENTS.md](AGENTS.md)。
 
-```yaml
----
-title: 文章标题
-description: 用于列表、搜索结果和分享卡片的简短摘要
-date: 2026-11-04
-tags: [Qt, Linux]
-draft: false
----
-```
+最常用的检查点：
 
-可选字段：`updated` 表示真实内容更新时间；未填写时不展示，也不伪造修改时间。
+- 文章放在 `src/content/blog/<分类>/`，新分类和新文件名使用小写英文 kebab-case。
+- 草稿使用 `draft: true`，发布验收前改为 `false`。
+- 站内文章链接使用从根目录开始的绝对路径，ASCII 字母小写并保留尾斜杠。
+- 发布前执行 `npm run verify`，再完成浏览器、Actions 和线上验收。
 
-站内文章链接使用从根目录开始的路径，例如：
-
-```text
-/blog/ecommerce/电商运营ai提效方案-01-工作诊断/
-```
-
-链接 slug 应与 Astro 构建后的文章 ID 保持一致（ASCII 字母小写）。提交前运行 `npm run verify`，避免大小写或路径变化产生死链。
+完整素材卡、写作结构、SEO、提交和完成定义以 SOP 为唯一事实源。
 
 ## 部署
 
